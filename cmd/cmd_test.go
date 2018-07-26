@@ -38,8 +38,7 @@ func executeCommandC(root *cobra.Command, args ...string) (c *cobra.Command, out
 	buf := &bytes.Buffer{}
 	root.SetOutput(buf)
 	root.SetArgs(args)
-
-	c, err = root.ExecuteC()
+	err = root.Execute()
 	return c, buf.String(), err
 }
 
@@ -98,9 +97,9 @@ const profileData = `
 
 // This is a basic integration test that makes sure basic happy paths work on the CLI
 func TestCommandsIntegration(t *testing.T) {
-	if err := confirmQriNotRunning(); err != nil {
-		t.Skip(err.Error())
-	}
+	//if err := confirmQriNotRunning(); err != nil {
+	//	t.Skip(err.Error())
+	//}
 
 	_, registryServer := regmock.NewMockServer()
 
@@ -189,7 +188,7 @@ func TestCommandsIntegration(t *testing.T) {
 				return
 			}
 
-			time.Sleep(500 * time.Millisecond)
+			time.Sleep(10 * time.Millisecond)
 		}()
 	}
 }
