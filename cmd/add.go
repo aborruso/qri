@@ -23,9 +23,14 @@ func NewAddCommand(f Factory, ioStreams IOStreams) *cobra.Command {
 Add retrieves a dataset owned by another peer and adds it to your repo.`,
 		Example: `  add a dataset named their_data, owned by other_peer:
   $ qri add other_peer/their_data`,
-		Run: func(cmd *cobra.Command, args []string) {
-			ExitIfErr(o.ErrOut, o.Complete(f))
-			ExitIfErr(o.ErrOut, o.Run(args))
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if err := o.Complete(f); err != nil {
+				return err
+			}
+			if err := o.Run(args); err != nil {
+				return err
+			}
+			return nil
 		},
 	}
 
